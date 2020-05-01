@@ -18,10 +18,18 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="quickjs\cutils.c" />
+    <ClCompile Include="quickjs\libregexp.c" />
+    <ClCompile Include="quickjs\libunicode.c" />
+    <ClCompile Include="quickjs\qjsc.c" />
+    <ClCompile Include="quickjs\quickjs-libc.c" />
+    <ClCompile Include="quickjs\quickjs.c" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{89E5F9E0-1C49-4060-A4DB-4F524EE5B87D}</ProjectGuid>
-    <RootNamespace>QuickJSCpp</RootNamespace>
+    <ProjectGuid>{3BF2BE6E-D714-4428-B4F2-F1771EF98436}</ProjectGuid>
+    <RootNamespace>QuickJs4cpp</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -84,8 +92,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;WIN32;CONFIG_BIGNUM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -137,28 +145,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="cutils.h" />
-    <ClInclude Include="JSAtom.h" />
-    <ClInclude Include="JSClass.h" />
-    <ClInclude Include="JSContext.h" />
-    <ClInclude Include="JSError.h" />
-    <ClInclude Include="JSFunction.h" />
-    <ClInclude Include="JSModule.h" />
-    <ClInclude Include="JSObject.h" />
-    <ClInclude Include="JSParse.h" />
-    <ClInclude Include="JSRuntime.h" />
-    <ClInclude Include="JSShape.h" />
-    <ClInclude Include="JSString.h" />
-    <ClInclude Include="JSValue.h" />
-    <ClInclude Include="list.h" />
-    <ClInclude Include="RecyclableObject.h" />
-    <ClInclude Include="TypeIds.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="JSContext.cpp" />
-    <ClCompile Include="JSRuntime.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
