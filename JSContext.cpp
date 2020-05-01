@@ -131,6 +131,124 @@ int JSContext::JS_ToBoolFree(JSValueConst val)
         }
     }
 }
+int JSContext::JS_ToInt64Free(int64_t* pres, JSValue val)
+{
+    uint32_t tag;
+    int64_t ret;
+
+ redo:
+    tag = JS_VALUE_GET_NORM_TAG(val);
+    switch(tag) {
+    case JS_TAG_INT:
+    case JS_TAG_BOOL:
+    case JS_TAG_NULL:
+    case JS_TAG_UNDEFINED:
+        ret = JS_VALUE_GET_INT(val);
+        break;
+    case JS_TAG_FLOAT64:
+        {
+            JSFloat64Union u;
+            double d;
+            int e;
+            d = JS_VALUE_GET_FLOAT64(val);
+            u.d = d;
+            /* we avoid doing fmod(x, 2^64) */
+            e = (u.u64 >> 52) & 0x7ff;
+            if (likely(e <= (1023 + 62))) {
+                /* fast case */
+                ret = (int64_t)d;
+            } else if (e <= (1023 + 62 + 53)) {
+                uint64_t v;
+                /* remainder modulo 2^64 */
+                v = (u.u64 & (((uint64_t)1 << 52) - 1)) | ((uint64_t)1 << 52);
+                ret = v << ((e - 1023) - 52);
+                /* take the sign into account */
+                if (u.u64 >> 63)
+                    ret = -ret;
+            } else {
+                ret = 0; /* also handles NaN and +inf */
+            }
+        }
+        break;
+#ifdef CONFIG_BIGNUM
+    case JS_TAG_BIG_FLOAT:
+    to_bf:
+        {
+            JSBigFloat *p = JS_VALUE_GET_PTR(val);
+            bf_get_int64(&ret, &p->num, BF_GET_INT_MOD);
+            JS_FreeValue(ctx, val);
+        }
+        break;
+    case JS_TAG_BIG_INT:
+        if (is_bignum_mode(ctx))
+            goto to_bf;
+        /* fall thru */
+#endif
+    default:
+        val = JS_ToNumberFree( val);
+        if (JS_IsException(val)) {
+            *pres = 0;
+            return -1;
+        }
+        goto redo;
+    }
+    *pres = ret;
+    return 0;
+}
+
+int JSContext::JS_ToInt64SatFree(int64_t *pres, JSValue val){
+    uint32_t tag;
+
+ redo:
+    tag = JS_VALUE_GET_NORM_TAG(val);
+    switch(tag) {
+    case JS_TAG_INT:
+    case JS_TAG_BOOL:
+    case JS_TAG_NULL:
+    case JS_TAG_UNDEFINED:
+        *pres = JS_VALUE_GET_INT(val);
+        return 0;
+    case JS_TAG_EXCEPTION:
+        *pres = 0;
+        return -1;
+    case JS_TAG_FLOAT64:
+        {
+            double d = JS_VALUE_GET_FLOAT64(val);
+            if (isnan(d)) {
+                *pres = 0;
+            } else {
+                if (d < INT64_MIN)
+                    *pres = INT64_MIN;
+                else if (d > INT64_MAX)
+                    *pres = INT64_MAX;
+                else
+                    *pres = (int64_t)d;
+            }
+        }
+        return 0;
+#ifdef CONFIG_BIGNUM
+    case JS_TAG_BIG_FLOAT:
+    to_bf:
+        {
+            JSBigFloat *p = JS_VALUE_GET_PTR(val);
+            bf_get_int64(pres, &p->num, 0);
+            JS_FreeValue(ctx, val);
+        }
+        return 0;
+    case JS_TAG_BIG_INT:
+        if (is_bignum_mode(ctx))
+            goto to_bf;
+        /* fall thru */
+#endif
+    default:
+        val = JS_ToNumberFree( val);
+        if (JS_IsException(val)) {
+            *pres = 0;
+            return -1;
+        }
+        goto redo;
+    }
+}
 
 int JSContext::JS_ToInt32Free(int32_t* pres, JSValue val)
 {
@@ -199,7 +317,7 @@ redo:
     *pres = ret;
     return 0;
 }
-
+#ifdef CONFIG_BIGNUM
 int JSContext::JS_ToBigInt64Free(int64_t* pres, JSValue val)
 {
     bf_t a_s, * a;
@@ -265,7 +383,7 @@ redo:
         bf_init(ctx->bf_ctx, r);
         bf_set(r, &p->num);
         bf_rint(r, BF_PREC_INF, BF_RNDZ);
-        JS_FreeValue(ctx, val);
+        JS_FreeValue( val);
         break;
     case JS_TAG_STRING:
         val = JS_StringToBigIntErr(ctx, val);
@@ -280,12 +398,13 @@ redo:
         goto redo;
     default:
     fail:
-        JS_FreeValue(ctx, val);
-        JS_ThrowTypeError(ctx, "cannot convert to bigint");
+        JS_FreeValue( val);
+        JS_ThrowTypeError( "cannot convert to bigint");
         return NULL;
     }
     return r;
 }
+#endif
 
 JSValue JSContext::JS_ToNumberHintFree(JSValue val, JSToNumberHintEnum flag)
 {
