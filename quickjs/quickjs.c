@@ -1906,6 +1906,7 @@ void JS_SetContextOpaque(JSContext *ctx, void *opaque)
 
 /* set the new value and free the old value after (freeing the value
    can reallocate the object data) */
+//为pval设置新值(带销毁旧值)
 static inline void set_value(JSContext *ctx, JSValue *pval, JSValue new_val)
 {
     JSValue old_val;
@@ -5086,7 +5087,7 @@ void __JS_FreeValue(JSContext *ctx, JSValue v)
 }
 
 /* garbage collection */
-
+//是否有子项(用于垃圾回收判断)
 static BOOL has_children(JSValueConst val)
 {
     switch(JS_VALUE_GET_TAG(val)) {
@@ -9226,6 +9227,7 @@ void JS_SetOpaque(JSValue obj, void *opaque)
 }
 
 /* return NULL if not an object of class class_id */
+//get jsvalue binding object
 void *JS_GetOpaque(JSValueConst obj, JSClassID class_id)
 {
     JSObject *p;
@@ -9236,7 +9238,7 @@ void *JS_GetOpaque(JSValueConst obj, JSClassID class_id)
         return NULL;
     return p->u.opaque;
 }
-
+//获取jsvalue的绑定对象(带抛出异常)
 void *JS_GetOpaque2(JSContext *ctx, JSValueConst obj, JSClassID class_id)
 {
     void *p = JS_GetOpaque(obj, class_id);

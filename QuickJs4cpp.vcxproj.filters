@@ -24,14 +24,58 @@
     <ClCompile Include="quickjs\libunicode.c">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="quickjs\qjsc.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="quickjs\quickjs.c">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="quickjs\quickjs-libc.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="binding\ApiEnter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="binding\ValTran.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="main2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="binding\jsbApis\manualApi.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="quickjspp.hpp">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="quickjs\cutils.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="quickjs\libregexp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="quickjs\libunicode.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="quickjs\list.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="quickjs\quickjs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="binding\ApiEnter.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="binding\JsBase.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="binding\ValTran.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="binding\easyBinding.hpp">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="binding\autoApi.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

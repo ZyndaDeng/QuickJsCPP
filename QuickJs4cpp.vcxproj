@@ -19,12 +19,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="binding\ApiEnter.cpp" />
+    <ClCompile Include="binding\jsbApis\manualApi.cpp" />
+    <ClCompile Include="binding\ValTran.cpp" />
+    <ClCompile Include="main2.cpp" />
     <ClCompile Include="quickjs\cutils.c" />
     <ClCompile Include="quickjs\libregexp.c" />
     <ClCompile Include="quickjs\libunicode.c" />
-    <ClCompile Include="quickjs\qjsc.c" />
     <ClCompile Include="quickjs\quickjs-libc.c" />
     <ClCompile Include="quickjs\quickjs.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="binding\ApiEnter.h" />
+    <ClInclude Include="binding\autoApi.h" />
+    <ClInclude Include="binding\easyBinding.hpp" />
+    <ClInclude Include="binding\JsBase.h" />
+    <ClInclude Include="binding\ValTran.h" />
+    <ClInclude Include="quickjspp.hpp" />
+    <ClInclude Include="quickjs\cutils.h" />
+    <ClInclude Include="quickjs\libregexp.h" />
+    <ClInclude Include="quickjs\libunicode.h" />
+    <ClInclude Include="quickjs\list.h" />
+    <ClInclude Include="quickjs\quickjs.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -95,6 +111,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

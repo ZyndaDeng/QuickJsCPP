@@ -32,6 +32,8 @@
 #include <intrin.h>
 #endif
 
+
+
 /* set if CPU is big endian */
 #undef WORDS_BIGENDIAN
 

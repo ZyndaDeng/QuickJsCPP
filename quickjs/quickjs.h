@@ -239,6 +239,7 @@ static inline JSValue __JS_NewFloat64(JSContext *ctx, double d)
 
 #define JS_VALUE_GET_OBJ(v) ((JSObject *)JS_VALUE_GET_PTR(v))
 #define JS_VALUE_GET_STRING(v) ((JSString *)JS_VALUE_GET_PTR(v))
+
 #define JS_VALUE_HAS_REF_COUNT(v) ((unsigned)JS_VALUE_GET_TAG(v) >= (unsigned)JS_TAG_FIRST)
 
 /* special values */
@@ -333,7 +334,9 @@ void *JS_GetContextOpaque(JSContext *ctx);
 void JS_SetContextOpaque(JSContext *ctx, void *opaque);
 JSRuntime *JS_GetRuntime(JSContext *ctx);
 void JS_SetMaxStackSize(JSContext *ctx, size_t stack_size);
+//为注册类设置prototype(如果类没有注册会断言)
 void JS_SetClassProto(JSContext *ctx, JSClassID class_id, JSValue obj);
+//获取注册类的prototype(如果类没有注册会断言)
 JSValue JS_GetClassProto(JSContext *ctx, JSClassID class_id);
 
 /* the following functions are used to select the intrinsic object to
@@ -641,6 +644,7 @@ void JS_FreeCString(JSContext *ctx, const char *ptr);
 JSValue JS_NewObjectProtoClass(JSContext *ctx, JSValueConst proto, JSClassID class_id);
 JSValue JS_NewObjectClass(JSContext *ctx, int class_id);
 JSValue JS_NewObjectProto(JSContext *ctx, JSValueConst proto);
+//新建一个js的object 相当于let o={};
 JSValue JS_NewObject(JSContext *ctx);
 
 JS_BOOL JS_IsFunction(JSContext* ctx, JSValueConst val);
@@ -904,6 +908,7 @@ typedef struct JSCFunctionListEntry {
 #define JS_ALIAS_DEF(name, from) { name, JS_PROP_WRITABLE | JS_PROP_CONFIGURABLE, JS_DEF_ALIAS, 0, .u.alias = { from, -1 } }
 #define JS_ALIAS_BASE_DEF(name, from, base) { name, JS_PROP_WRITABLE | JS_PROP_CONFIGURABLE, JS_DEF_ALIAS, 0, .u.alias = { from, base } }
 
+//为jsvalue设置属性(所有类型的属性)
 void JS_SetPropertyFunctionList(JSContext *ctx, JSValueConst obj,
                                 const JSCFunctionListEntry *tab,
                                 int len);
